@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+    <section class="no-border-bottom section-sm">
+        <div class="container">
+            <header class="section-header">
+                <span>Settings</span>
+                <h3>Profile settings</h3>
+                <p>Change your name, avatar, location, description, etc.</p>
+            </header>
+            {##}
+            <div class="row">
+                <div class="col-xs-12 col-sm-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Profile</h6>
+                        </div>
+                        {##}
+                        <div class="card-block">
+                            <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% for form in setting_profile %}
+                                        <div class="form-group">
+                                            <label for="input{{ form.id_for_label }}"
+                                                   class="col-sm-2 control-label">{{ form.label }}</label>
+                                            <div class="col-sm-10">
+                                                {{ form }}
+                                            </div>
+                                        </div>
+                                {% endfor %}
+                                <hr>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button class="btn btn-primary btn-sm" type="submit">Save changes</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {##}
+                <div class="col-xs-12 col-sm-4">
+                    <row>
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Avatar</h6>
+                        </div>
+                        <div class="card-block">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <img src="{{ request.user.get_profile_img }}" height="300px;" width="100%">
+
+                                <br>
+                                <button class="btn btn-primary btn-sm" href="#"
+                                        type="submit">Update
+                                </button>
+                                {#                                {% endif %}#}
+                            </form>
+                        </div>
+
+                    </div>
+                    </row>
+                    <row>
+                    <div class="card">
+                        <div class="card-header">
+                            <h6>Change Password</h6>
+                        </div>
+                        <div class="card-block">
+                            <form method="post">
+                                {% csrf_token %}
+                                {% for form in passw_form %}
+                                    {{ form }}
+                                {% endfor %}
+                                <br>
+                                <button class="btn btn-primary btn-sm" href="#"
+                                        type="submit">Update
+                                </button>
+                                {#                                {% endif %}#}
+                            </form>
+                        </div>
+
+                    </div>
+                    </row>
+                </div>
+            </div>
+            {##}
+        </div>
+    </section>
+{% endblock %}

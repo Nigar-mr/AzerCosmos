@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="login">
+    <h3 class="text-center text-white pt-5">Sign Up</h3>
+    <div class="container">
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-6">
+                <div id="login-box" class="col-md-12">
+                    <form id="register-form" class="form" action="" method="POST">
+                        {% csrf_token %}
+                        <h3 class="text-center text-info">Sign Up</h3>
+                        <div class="form-group">
+                            <input id="name" name=name" type="text" class="form-control" placeholder="Name">
+                            <input id="surname" name=surname" type="text" class="form-control" placeholder="Surname">
+                            <input id="username" name=username" type="text" class="form-control" placeholder="Username">
+                            <input id="email" name=email" type="email" class="form-control" placeholder="Email">
+                            <input id="password" name=password" type="password" class="form-control"
+                                   placeholder="Password">
+
+                        </div>
+                        <button id="register" type="submit">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+
+    var form = document.getElementById('register-form')
+    form.addEventListener('submit', function (e) {
+        e.preventDefault()
+        console.log('Form Submited')
+        var url = 'http://localhost:8000/api/register/'
+        var name = document.getElementById('name').value
+        var surname = document.getElementById('surname').value
+        var username = document.getElementById('username').value
+        var email = document.getElementById('email').value
+        var password = document.getElementById('password').value
+
+        $.ajax({
+            url: url,
+            method: "POST",
+            data: {
+                'name': name,
+                'surname': surname,
+                'username': username,
+                'email': email,
+                'password': password,
+                csrfmiddlewaretoken: "{{ csrf_token }}"
+            },
+            success: function (data) {
+                console.log('1')
+
+                console.log(data)
+            },
+            error: function (xhr, err, msg) {
+                console.log('2')
+
+                console.log(xhr, err, msg);
+            }
+        });
+    })
+
+</script>
+
+</body>
+
+</html>
